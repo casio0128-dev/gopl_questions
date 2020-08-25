@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 )
 
-func echo(out *os.File) {
+func echo() {
 	args := os.Args[1:]
 
 	//flag.Parse()
@@ -21,16 +20,14 @@ func echo(out *os.File) {
 		result = append(result, arg)
 	}
 	result = append(result, "\n")
-	if _, err := out.WriteString(strings.Join(result, " ")); err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println(strings.Join(result, " "))
 }
 
 /*
 	練習問題1-1
 		echoプログラムを修正して、そのプログラムを起動したコマンド名である`os.Args[0[`も表示されるようにしなさい
  */
-func echo1_1(out *os.File) {
+func echo1_1() {
 	var result []string
 
 	args := os.Args
@@ -40,18 +37,14 @@ func echo1_1(out *os.File) {
 		result = append(result, arg)
 	}
 	result = append(result, "\n")
-	if out != nil {
-		if _, err := out.WriteString(strings.Join(result, " ")); err != nil {
-			log.Fatal(err)
-		}
-	}
+	fmt.Println(strings.Join(result, " "))
 }
 
 /*
 	練習問題1-2
 		echoプログラムを修正して、個々の引数のインデック于sと値の組みを１行ごとに表示しなさい
  */
-func echo1_2(out *os.File) {
+func echo1_2() {
 	var result []string
 	args := os.Args[1:]
 
@@ -60,11 +53,7 @@ func echo1_2(out *os.File) {
 	}
 
 	result = append(result, "\n")
-	if out != nil {
-		if _, err := out.WriteString(strings.Join(result, "")); err != nil {
-			log.Fatal(err)
-		}
-	}
+	fmt.Println(strings.Join(result, ""))
 }
 
 /*
@@ -75,7 +64,7 @@ func echo1_3() {
 	fmt.Print(procCompleteFuncTime(echo2, echo3), "[ns]")
 }
 
-func procCompleteFuncTime(f1, f2 func(*os.File)) int64 {
+func procCompleteFuncTime(f1, f2 func()) int64 {
 	now := time.Now()
 	var f1Time int64
 	var f2Time int64
@@ -84,12 +73,12 @@ func procCompleteFuncTime(f1, f2 func(*os.File)) int64 {
 	ch2 := make(chan interface{})
 
 	go func(ch chan interface{}) {
-		f1(nil)
+		f1()
 		close(ch1)
 	}(ch1)
 
 	go func(ch chan interface{}) {
-		f2(nil)
+		f2()
 		close(ch2)
 	}(ch2)
 
@@ -113,21 +102,17 @@ func procCompleteFuncTime(f1, f2 func(*os.File)) int64 {
 	return f1Time - f2Time
 }
 
-func echo2(out *os.File) {
+func echo2() {
 	var s, sep string
-
-	if out == nil {
-		out = os.Stdout
-	}
 
 	for _, arg := range os.Args[1:] {
 		s += sep + arg
 		sep = " "
 	}
+
+	fmt.Println(s)
 }
 
-func echo3(out *os.File) {
-	if out == nil {
-		out = os.Stdout
-	}
+func echo3() {
+	fmt.Println(strings.Join(os.Args[1:], " "))
 }
