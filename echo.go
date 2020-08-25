@@ -64,6 +64,10 @@ func echo1_3() {
 	fmt.Print(procCompleteFuncTime(echo2, echo3), "[ns]")
 }
 
+/*
+	procCompleteFuncTime(func, func) int64
+		return f1 - f2 [nano second]
+ */
 func procCompleteFuncTime(f1, f2 func()) int64 {
 	now := time.Now()
 	var f1Time int64
