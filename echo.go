@@ -26,6 +26,10 @@ func echo(out *os.File) {
 	}
 }
 
+/*
+	練習問題1-1
+		echoプログラムを修正して、そのプログラムを起動したコマンド名である`os.Args[0[`も表示されるようにしなさい
+ */
 func echo1_1(out *os.File) {
 	var result []string
 
@@ -43,6 +47,10 @@ func echo1_1(out *os.File) {
 	}
 }
 
+/*
+	練習問題1-2
+		echoプログラムを修正して、個々の引数のインデック于sと値の組みを１行ごとに表示しなさい
+ */
 func echo1_2(out *os.File) {
 	var result []string
 	args := os.Args[1:]
@@ -59,7 +67,15 @@ func echo1_2(out *os.File) {
 	}
 }
 
-func echo1_3(f1, f2 func(*os.File)) int64 {
+/*
+	練習問題1-3
+		非効率な可能性のあるバージョン（echo2）と`strings.Join`を使ったバージョン（echo3）とで、実行時の性能差を計測しなさい
+ */
+func echo1_3() {
+	fmt.Print(procCompleteFuncTime(echo2, echo3), "[ns]")
+}
+
+func procCompleteFuncTime(f1, f2 func(*os.File)) int64 {
 	now := time.Now()
 	var f1Time int64
 	var f2Time int64
@@ -95,4 +111,23 @@ func echo1_3(f1, f2 func(*os.File)) int64 {
 	}
 
 	return f1Time - f2Time
+}
+
+func echo2(out *os.File) {
+	var s, sep string
+
+	if out == nil {
+		out = os.Stdout
+	}
+
+	for _, arg := range os.Args[1:] {
+		s += sep + arg
+		sep = " "
+	}
+}
+
+func echo3(out *os.File) {
+	if out == nil {
+		out = os.Stdout
+	}
 }
